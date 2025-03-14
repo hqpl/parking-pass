@@ -45,6 +45,12 @@
     background-color: #f5f5f5;
 }
 
+.plates-input {
+    padding: 0px;
+    max-width: 266px;
+    background-color: #eee;
+}
+
 .status, .demised {
     padding: 4px 8px;
     border-radius: 4px;

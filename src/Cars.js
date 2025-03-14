@@ -1,17 +1,23 @@
 // src/components/Cars.js
 import React, { useState, useEffect } from 'react';
+import CarForm from './CarForm';
 import './Cars.css';  // You'll need to create this CSS file
 
 const HOST = 'http://192.168.0.3:8080';
 
 const Cars = () => {
     const [cars, setCars] = useState([]);
+    const [isFormVisible, setIsFormVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchCars();
     }, []);
+
+    const toggleForm = () => {
+        setIsFormVisible(!isFormVisible);
+    };
 
     const fetchCars = async () => {
 
@@ -53,11 +59,22 @@ const Cars = () => {
     return (
         <div className="cars-container">
             <div className="cars-grid">
+
+                {/* Add new Car card */}
+                {!isFormVisible && (
                 <div className="car-card add-new-card">
                     <div className="add-new-content">
-                        <h2>Add New Car</h2>
+                        <h2 onClick={toggleForm}
+                            style={{ cursor: 'pointer' }}
+                        >Add New Car</h2>
                     </div>
                 </div>
+                )}
+                {/* Add new Car form card */}
+
+                {isFormVisible && <CarForm onClose={toggleForm} />}
+
+                {/* List of Car cards */}
 
                 {cars.map(car => (
                     <div key={car.id} className="car-card">
