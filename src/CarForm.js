@@ -63,7 +63,6 @@ const CarForm = () => {
 
     return (
         <div className="car-card add-new-form">
-            <h3>Add New Car</h3>
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '15px' }}>
                     <label htmlFor="manufacturer" style={{ display: 'block', marginBottom: '5px', color: '#666' }}>
