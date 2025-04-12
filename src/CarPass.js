@@ -3,6 +3,7 @@ import CarForm from './CarForm';
 import './CarPass.css';
 
 const HOST = 'http://192.168.0.3:8080';
+const credentials = btoa('Mat@Hackathon:password');
 
 const CarPass = () => {
     const [carPasses, setCarPasses] = useState([]);
@@ -20,7 +21,6 @@ const CarPass = () => {
 
     const fetchCarPasses = async () => {
         try {
-            const credentials = btoa('Mat@Hackathon:password');
             const response = await fetch(`${HOST}/api/20250327/carpass`, {
                 method: 'GET',
                 mode: 'cors',
@@ -52,8 +52,28 @@ const CarPass = () => {
     };
 
     const handleGeneratePass = async (carId) => {
-        // Implement the logic to generate a new pass
-        console.log(`Generating pass for car ID: ${carId}`);
+        try {
+            const response = await fetch(`${HOST}/api/20250227/pass/generate/${carId}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${credentials}`,
+                    'X-HACKATHON': 'authenticated'
+                }
+            });
+
+            if (response.ok) {
+                // Refresh the page to show the new pass
+                window.location.reload();
+            } else {
+                console.error('Failed to generate pass:', response.status);
+                alert('Failed to generate pass. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error generating pass:', error);
+            alert('Error generating pass. Please try again.');
+        }
     };
 
     if (isLoading) {
