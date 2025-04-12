@@ -14,27 +14,44 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  justify-content: flex-end;
 }
 
 .header-logo {
-  width: 180px;
-  height: 80px;
+  width: 200px;
+  height: 900px;
   object-fit: contain;
   position: absolute;
   left: 5px;
 }
 
+/* Hide logo when screen width is less than 600px */
+@media screen and (max-width: 600px) {
+  .header-logo {
+    display: none;
+  }
+}
+
+/* Optional: You can add multiple breakpoints */
+@media screen and (max-width: 1024px) {
+  .header-logo {
+    width: 140px; /* Make logo smaller on medium screens */
+    height: 60px;
+  }
+}
+
 .App-header h1 {
   background-color: #282c34;
-  align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  text-align: right;
+  padding-right: 5px;
+  margin-right: 5px;
 }
 
 .App-link {
   color: #61dafb;
 }
+

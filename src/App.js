@@ -1,4 +1,4 @@
-import Cars from './Cars';
+import CarPass from './CarPass';
 import './App.css';
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
                     <h1>Online Parking Card Manager</h1>
                 </div>
             </header>
-            <Cars />
+            <CarPass />
         </div>
     );
 }

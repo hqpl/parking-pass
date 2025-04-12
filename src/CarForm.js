@@ -1,8 +1,12 @@
 // CarForm.js
 import React, { useState } from 'react';
-import './Cars.css';
+import './CarPass.css';
+
+const HOST = 'http://192.168.0.3:8080';
 
 const CarForm = () => {
+
+
     const [formData, setFormData] = useState({
         manufacturer: '',
         plates: ''
@@ -55,30 +59,62 @@ const CarForm = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add your submit logic here
-        console.log('Form submitted:', formData);
+
+        try {
+            const credentials = btoa('Mat@Hackathon:password');
+            const response = await fetch(`${HOST}/api/20250227/car`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${credentials}`,
+                    'X-HACKATHON': 'authenticated'
+                },
+                body: JSON.stringify({
+                    manufacturer: formData.manufacturer,
+                    plates: formData.plates
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Car added successfully:', result);
+                // Reset form
+                setFormData({
+                    manufacturer: '',
+                    plates: ''
+                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+                // Optionally refresh the car list or show success message
+                // You might want to add a success notification here
+            } else {
+                console.error('Failed to add car:', response.status);
+                // Handle error - maybe show an error message to the user
+            }
+        } catch (error) {
+            console.error('Error adding car:', error);
+            // Handle error - maybe show an error message to the user
+        }
     };
 
+
     return (
-        <div className="car-card add-new-form">
+        <div className="carpass-card add-new-form">
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '15px' }}>
-                    <label htmlFor="manufacturer" style={{ display: 'block', marginBottom: '5px', color: '#666' }}>
+                    <label htmlFor="manufacturer">
                         Manufacturer:
                     </label>
                     <select
                         id="manufacturer"
                         name="manufacturer"
+                        className="new-text"
                         value={formData.manufacturer}
                         onChange={handleChange}
-                        style={{
-                            width: '100%',
-                            padding: '8px',
-                            borderRadius: '4px',
-                            border: '1px solid #ddd'
-                        }}
                         required
                     >
                         <option value="">Select Manufacturer</option>
@@ -90,42 +126,29 @@ const CarForm = () => {
                     </select>
                 </div>
 
-                <div style={{ marginBottom: '15px' }}>
-                    <label htmlFor="plates" style={{ display: 'block', marginBottom: '5px', color: '#666' }}>
+                <div>
+                    <label htmlFor="plates">
                         License Plates:
                     </label>
                     <input
                         type="text"
                         id="plates"
                         name="plates"
-                        className="plates-input"
+                        className="new-text"
                         value={formData.plates}
                         onChange={handleChange}
                         maxLength={10}
-                        style={{
-                            width: '100%',
-                            padding: '8px',
-                            borderRadius: '4px',
-                            border: '1px solid #ddd'
-                        }}
                         required
                     />
                 </div>
 
-                <button
-                    type="submit"
-                    style={{
-                        backgroundColor: '#004d99',
-                        color: 'white',
-                        padding: '10px 20px',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        width: '100%'
-                    }}
-                >
-                    Submit
-                </button>
+                <div className="margin-top">
+                    <button className="active-btn"
+                        type="submit"
+                    >
+                        Add new car.
+                    </button>
+                </div>
             </form>
         </div>
     );
